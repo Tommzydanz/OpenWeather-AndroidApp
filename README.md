@@ -1,6 +1,9 @@
 # OpenWeather-AndroidApp
 This app is created to give information about the weather conditions in all cities in Nigeria
 
+# Getting Started 
+screenshots
+
 # IDE
 - Android Studio
 
