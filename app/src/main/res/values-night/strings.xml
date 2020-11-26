@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">OpenWeather</string>
+    <string name="title_activity_weather">WeatherActivity</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Open Weather </string>
+    <string name="nav_header_subtitle">Know your weather</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="menu_home">City</string>
+    <string name="search_hint">search city...</string>
+
+    <string name="weather_launcher">Weather launcher</string>
+    <string name="version_address_name">Version 1.0\n\topenweathermap.org</string>
+    <string name="add_city_ctrl">add city</string>
+    <string name="weather_state_background">backgroundImage</string>
+</resources>
