@@ -1,5 +1,6 @@
 package com.example.openweather.adapters;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.openweather.MainActivity;
 import com.example.openweather.R;
 import com.example.openweather.WeatherActivity;
 import com.example.openweather.model.City;
@@ -30,6 +32,7 @@ public class CityListRVAdapter extends RecyclerView.Adapter<CityListRVAdapter.Vi
     private List<City> cityList;
     private List<City> cityListAll;
     private Context context;
+
 
     public CityListRVAdapter(List<City> cityList, Context context) {
         this.cityList = cityList;
@@ -52,21 +55,17 @@ public class CityListRVAdapter extends RecyclerView.Adapter<CityListRVAdapter.Vi
     @Override
     public void onBindViewHolder(@NonNull CityListRVAdapter.ViewHolder holder, int position) {
 
-        cityList.get(position).getId();
+
         holder.cityName.setText(cityList.get(position).getName());
 
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent cityIntent = new Intent(context.getApplicationContext(), WeatherActivity.class);
-                cityIntent.putExtra("city", cityList.get(position).getName());
-
-                cityIntent.putExtra(CityFragment.EXTRA_POSITION, position);
-
-                context.startActivity(cityIntent);
-            }
+        holder.itemView.setOnClickListener(v -> {
+            Intent cityIntent = new Intent(context.getApplicationContext(), WeatherActivity.class);
+            cityIntent.putExtra("city", cityList.get(position).getName());
+            cityIntent.putExtra("id", cityList.get(position).getId());
+            cityIntent.putExtra(CityFragment.EXTRA_POSITION, position);
+            context.startActivity(cityIntent);
+            ((Activity)context).finish();
         });
-
     }
 
     @Override
@@ -76,7 +75,7 @@ public class CityListRVAdapter extends RecyclerView.Adapter<CityListRVAdapter.Vi
 
     public static class ViewHolder extends RecyclerView.ViewHolder{
 
-        private TextView cityName;
+        private final TextView cityName;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -90,7 +89,7 @@ public class CityListRVAdapter extends RecyclerView.Adapter<CityListRVAdapter.Vi
         return cityFilter;
     }
     // Filter method used for  searching objects
-    private Filter cityFilter = new Filter() {
+    private final Filter cityFilter = new Filter() {
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {
             List<City> filteredCityList = new ArrayList<>();
@@ -105,7 +104,6 @@ public class CityListRVAdapter extends RecyclerView.Adapter<CityListRVAdapter.Vi
                             filteredCityList.add(city);
                         }
                     }
-
             }
             FilterResults results = new FilterResults();
             results.values = filteredCityList;

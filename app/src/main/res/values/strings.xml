@@ -9,7 +9,7 @@
     <string name="action_settings">Settings</string>
 
     <string name="menu_home">City</string>
-    <string name="search_hint">Search city...</string>
+    <string name="search_hint">Search city…</string>
     <string name="add_city_ctrl">add city</string>
     <string name="weather_launcher">Weather launcher</string>
     <string name="version_address_name">Version 1.0\n\topenweathermap.org</string>
@@ -23,5 +23,6 @@
     <string name="feels_like_detail">feels like </string>
     <string name="humidities_detail">Humidity \n\n%1$d%</string>
     <string name="levels_detail">Level \n\n%1$d°</string>
+    <string name="network_error_message">Retry \nNetwork Problem</string>
 
 </resources>

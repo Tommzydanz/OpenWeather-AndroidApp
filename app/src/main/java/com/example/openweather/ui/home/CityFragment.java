@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.openweather.R;
 import com.example.openweather.adapters.FiveDayRVAdapter;
 import com.example.openweather.adapters.ThreeHoursRVAdapter;
@@ -37,6 +38,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
+import pl.droidsonroids.gif.GifImageView;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -45,27 +47,29 @@ import static androidx.recyclerview.widget.RecyclerView.*;
 
 public class CityFragment extends Fragment {
 
+
+
     //extra position string
     public static final String EXTRA_POSITION = "extra_position";
 
-    //default positon string
+    //default position string
     private static final int DEFAULT_POSITION = -1;
 
-    private CityViewModel cityViewModel;
-    private ImageView weatherBackdrop;
-    private City city;
+    private GifImageView weatherBackdrop;
 
     ThreeHoursRVAdapter threeHoursRVAdapter;
 
     FiveDayRVAdapter fiveDayRVAdapter;
 
     private WeatherModel weatherModel;
-
-    private TextView cityNameView, dateView, feels_likeView, tempMinMaxView, weatherDescView, windDegView, humidityView, smallFeelsLikeView,
-
-    moreWeatherForcastView;
-
-    private RecyclerView recyclerView1, recyclerView2;
+    private TextView cityNameView;
+    private TextView dateView;
+    private TextView feels_likeView;
+    private TextView tempMinMaxView;
+    private TextView weatherDescView;
+    private TextView windDegView;
+    private TextView humidityView;
+    private TextView smallFeelsLikeView;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -74,7 +78,6 @@ public class CityFragment extends Fragment {
         List<WeatherList> weatherLists = new ArrayList<>();
         threeHoursRVAdapter = new ThreeHoursRVAdapter(weatherList, getContext());
         fiveDayRVAdapter = new FiveDayRVAdapter(weatherLists, getContext());
-        //TextViews
         //feels_like
         feels_likeView = root.findViewById(R.id.big_feels_like_tempView);
         //weather Description
@@ -90,36 +93,43 @@ public class CityFragment extends Fragment {
         // feels like with the icon
         smallFeelsLikeView = root.findViewById(R.id.feels_like_tempView);
         cityNameView = root.findViewById(R.id.city_name_textView);
-        moreWeatherForcastView = root.findViewById(R.id.weather_address_view);
-        moreWeatherForcastView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.openweathermap.org/"));
-                if (browserIntent.resolveActivity(requireActivity().getPackageManager()) != null) {
-                    startActivity(browserIntent);
-                }
+        //open weather map web address
+        TextView moreWeatherForcastView = root.findViewById(R.id.weather_address_view);
+        moreWeatherForcastView.setOnClickListener(v -> {
+            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.openweathermap.org/"));
+            if (browserIntent.resolveActivity(requireActivity().getPackageManager()) != null) {
+                startActivity(browserIntent);
             }
         });
+
+
+        weatherBackdrop = root.findViewById(R.id.weather_backdrop_view);
         //recyclerview1 {horizontal}
-        recyclerView1 = root.findViewById(R.id.recycler_list1);
+        RecyclerView recyclerView1 = root.findViewById(R.id.recycler_list1);
         recyclerView1.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
         recyclerView1.setItemAnimator(new DefaultItemAnimator());
         recyclerView1.setHasFixedSize(true);
         recyclerView1.setAdapter(threeHoursRVAdapter);
         //ImageView weatherBackdrop = root.findViewById(R.id.weather_backdrop_view);
         // RecyclerView List1
-        recyclerView2 = root.findViewById(R.id.recycler_list2);
+        RecyclerView recyclerView2 = root.findViewById(R.id.recycler_list2);
         recyclerView2.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView2.setItemAnimator(new DefaultItemAnimator());
         recyclerView2.setHasFixedSize(true);
         recyclerView2.setAdapter(fiveDayRVAdapter);
+
+
+        /* Intent method and getIntent */
         getIntentMethod();
         String cityName;
         Intent intent = requireActivity().getIntent();
         cityName = intent.getStringExtra("city");
         cityNameView.setText(cityName);
+        int cityId;
+        cityId = intent.getIntExtra("id", 2350592);
 
-        Call<WeatherModel> weatherModelCall = CityApiService.getInstance().getApi().getList(2350592, "acef04100ca9abf95a99dafcaceddd7b", "metric");
+
+        Call<WeatherModel> weatherModelCall = CityApiService.getInstance().getApi().getList(cityId, "acef04100ca9abf95a99dafcaceddd7b", "metric");
         weatherModelCall.enqueue(new Callback<WeatherModel>() {
             @Override
             public void onResponse(@NotNull Call<WeatherModel> call, @NotNull Response<WeatherModel> response) {
@@ -141,9 +151,11 @@ public class CityFragment extends Fragment {
     // populate the weather fragment UI
     @SuppressLint("SetTextI18n")
     public void populateUIText(WeatherModel weatherModel) {
+
         cityNameView.setText(weatherModel.getCity().getName());
         feels_likeView.setText(weatherModel.getList().get(0).getMainList().getFeels_like() + "\u00B0");
         smallFeelsLikeView.setText(requireContext().getString(R.string.feels_like_detail) + "\n\n" +weatherModel.getList().get(0).getMainList().getFeels_like()+ "\u00B0");
+        getBackdrop();
         weatherDescView.setText(weatherModel.getList().get(0).getWeather().get(0).getCloud_desc());
         windDegView.setText(getContext().getString(R.string.levels_detail, weatherModel.getList().get(0).getWind().getWind_deg()));
         humidityView.setText("Humidity" + "\n\n" + weatherModel.getList().get(0).getMainList().getHumidity() + "%");
@@ -158,12 +170,7 @@ public class CityFragment extends Fragment {
 
     //Intent method that gets the position of the views from the API
     public Intent getIntentMethod() {
-
-        String cityName;
         Intent intent = getActivity().getIntent();
-        cityName = intent.getStringExtra("city");
-
-        cityNameView.setText(cityName);
         assert intent != null;
         int position = intent.getIntExtra(EXTRA_POSITION, DEFAULT_POSITION);
         if (position == DEFAULT_POSITION) {
@@ -189,4 +196,55 @@ public class CityFragment extends Fragment {
         return timeFormat.format(dateObject);
     }
 
+
+
+    public void getBackdrop(){
+        final String CLEAR_SKY = "clear sky";
+        final String FEW_CLOUDS = "few clouds";
+        final String SCATTERED_CLOUDS = "scattered clouds";
+        final String BROKEN_CLOUDS = "broken clouds";
+        final String LIGHT_RAIN = "light rain";
+        final String RAIN = "rain";
+        final String THUNDERSTORM = "thunderstorm";
+        final String SNOW = "snow";
+        final String MIST = "mist";
+
+        switch (weatherModel.getList().get(0).getWeather().get(0).getCloud_desc()) {
+            case CLEAR_SKY:
+                Glide.with(getContext())
+                        .load(R.raw.clear_sky_1).into(weatherBackdrop);
+                break;
+            case FEW_CLOUDS:
+                Glide.with(getContext())
+                        .load(R.raw.few_clouds).centerCrop().into(weatherBackdrop);
+                break;
+            case SCATTERED_CLOUDS:
+                Glide.with(getContext())
+                        .load(R.raw.scattered_cloud_1).centerCrop().into(weatherBackdrop);
+                break;
+            case BROKEN_CLOUDS:
+                Glide.with(getContext())
+                        .load(R.raw.broken_cloud_1).centerCrop().into(weatherBackdrop);
+                break;
+            case LIGHT_RAIN:
+                Glide.with(getContext())
+                        .load(R.raw.shower_rain_1).centerCrop().into(weatherBackdrop);
+                break;
+            case RAIN:
+                Glide.with(getContext())
+                        .load(R.raw.rain_1).centerCrop().into(weatherBackdrop);
+                break;
+            case THUNDERSTORM:
+                Glide.with(getContext())
+                        .load(R.raw.thunderstorm_1).centerCrop().into(weatherBackdrop);
+                break;
+            case SNOW:
+                Glide.with(getContext())
+                        .load(R.raw.snow).centerCrop().into(weatherBackdrop);
+                break;
+            case MIST:
+                Glide.with(getContext()).load(R.raw.mist).into(weatherBackdrop);
+                break;
+        }
+    }
 }

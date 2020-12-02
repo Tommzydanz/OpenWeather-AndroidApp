@@ -59,7 +59,6 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(customToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-
         emptySearchResult = findViewById(R.id.empty_search_result);
 
 

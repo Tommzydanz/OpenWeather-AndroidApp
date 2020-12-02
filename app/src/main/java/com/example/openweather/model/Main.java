@@ -44,10 +44,18 @@ public class Main {
     public double getTemp_min() {
         return (int)temp_min;
     }
+    public void setTemp_min(double temp_min) {
+        this.temp_min = temp_min;
+    }
 
     public double getTemp_max() {
         return (int) temp_max;
     }
+
+    public void setTemp_max(double temp_max) {
+        this.temp_max = temp_max;
+    }
+
 
     public int getHumidity() {
         return humidity;

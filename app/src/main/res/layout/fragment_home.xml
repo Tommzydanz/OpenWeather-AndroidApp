@@ -9,7 +9,7 @@
     android:backgroundTint="#1985B1"
     tools:context=".ui.home.CityFragment">
 
-    <ImageView
+    <pl.droidsonroids.gif.GifImageView
         android:id="@+id/weather_backdrop_view"
         android:layout_width="match_parent"
         android:layout_height="269dp"
@@ -27,17 +27,17 @@
         android:id="@+id/city_name_textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        tools:text="Abuja "
         android:textColor="@color/white"
         android:textSize="18sp"
         android:textStyle="bold"
+        app:drawableStartCompat="@drawable/ic_location_24"
         app:layout_constraintBottom_toTopOf="@+id/main_date_view"
         app:layout_constraintEnd_toStartOf="@+id/weather_desc_view"
         app:layout_constraintHorizontal_bias="0.087"
         app:layout_constraintStart_toStartOf="@+id/weather_backdrop_view"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.204"
-        app:drawableStartCompat="@drawable/ic_location_24" />
+        tools:text="Abuja " />
 
     <TextView
         android:id="@+id/big_feels_like_tempView"
@@ -223,8 +223,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="4dp"
-        android:drawablePadding="20dp"
+        android:layout_marginTop="8dp"
+        android:drawablePadding="24dp"
         android:textAlignment="center"
         android:textColor="@color/white"
         app:drawableStartCompat="@drawable/ic_humidity_main"
@@ -251,14 +251,14 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:drawablePadding="20dp"
-        tools:text="@string/feels_like_detail"
         android:textAlignment="center"
         android:textColor="@color/white"
         app:drawableStartCompat="@drawable/ic_thermometer_feels"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.853"
         app:layout_constraintStart_toEndOf="@+id/humidity_view"
-        app:layout_constraintTop_toBottomOf="@+id/slide2" />
+        app:layout_constraintTop_toBottomOf="@+id/slide2"
+        tools:text="@string/feels_like_detail" />
 
     <TextView
         android:id="@+id/five_days_textview"
@@ -282,6 +282,4 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/five_days_textview"
         tools:listitem="@layout/five_day_list_item" />
-
-
 </androidx.constraintlayout.widget.ConstraintLayout>
