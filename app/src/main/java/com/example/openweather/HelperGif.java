@@ -10,7 +10,7 @@ import com.example.openweather.model.WeatherModel;
 public class HelperGif {
 
 
-    ImageView imageBackdrop;
+    /*ImageView imageBackdrop;
 
     private static final String CLEAR_SKY = "clear sky";
     private static final String FEW_CLOUDS = "few clouds";
@@ -29,6 +29,8 @@ public class HelperGif {
 
     }
 
+     Till further notice
+    */
 
 
 }
