@@ -2,15 +2,12 @@ package com.example.openweather.ui.home;
 
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.Intent;
-import android.icu.text.Transliterator;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,7 +21,6 @@ import com.bumptech.glide.Glide;
 import com.example.openweather.R;
 import com.example.openweather.adapters.FiveDayRVAdapter;
 import com.example.openweather.adapters.ThreeHoursRVAdapter;
-import com.example.openweather.model.City;
 import com.example.openweather.model.WeatherList;
 import com.example.openweather.model.WeatherModel;
 import com.example.openweather.services.CityApiService;
@@ -36,14 +32,11 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-import java.util.Objects;
 
 import pl.droidsonroids.gif.GifImageView;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-
-import static androidx.recyclerview.widget.RecyclerView.*;
 
 public class CityFragment extends Fragment {
 
@@ -141,7 +134,7 @@ public class CityFragment extends Fragment {
             }
 
             @Override
-            public void onFailure(Call<WeatherModel> call, Throwable t) {
+            public void onFailure(@NotNull Call<WeatherModel> call, @NotNull Throwable t) {
                 Toast.makeText(getContext(), "Unable to connect to server", Toast.LENGTH_SHORT).show();
             }
         });
@@ -153,14 +146,14 @@ public class CityFragment extends Fragment {
     public void populateUIText(WeatherModel weatherModel) {
 
         cityNameView.setText(weatherModel.getCity().getName());
-        feels_likeView.setText(weatherModel.getList().get(0).getMainList().getFeels_like() + "\u00B0");
-        smallFeelsLikeView.setText(requireContext().getString(R.string.feels_like_detail) + "\n\n" +weatherModel.getList().get(0).getMainList().getFeels_like()+ "\u00B0");
+        feels_likeView.setText((int) weatherModel.getList().get(0).getMainList().getFeels_like() + "\u00B0");
+        smallFeelsLikeView.setText("feels like" + "\n\n" + (int) weatherModel.getList().get(0).getMainList().getFeels_like()+ "\u00B0");
         getBackdrop();
         weatherDescView.setText(weatherModel.getList().get(0).getWeather().get(0).getCloud_desc());
-        windDegView.setText(getContext().getString(R.string.levels_detail, weatherModel.getList().get(0).getWind().getWind_deg()));
+        windDegView.setText(requireContext().getString(R.string.levels_detail, weatherModel.getList().get(0).getWind().getWind_deg()));
         humidityView.setText("Humidity" + "\n\n" + weatherModel.getList().get(0).getMainList().getHumidity() + "%");
         //max and min temp
-        tempMinMaxView.setText(String.format("%s-%s\u00B0", weatherModel.getList().get(0).getMainList().getTemp_min(), weatherModel.getList().get(0).getMainList().getTemp_max()));
+        tempMinMaxView.setText(String.format("%s-%s\u00B0", (int) weatherModel.getList().get(0).getMainList().getTemp_min(), (int) weatherModel.getList().get(0).getMainList().getTemp_max()));
         Date dateObject = new Date(weatherModel.getList().get(0).getDt()*1000L);
         String formattedDate = formatDate(dateObject);
         String formattedTime = formatTime(dateObject);
@@ -169,15 +162,10 @@ public class CityFragment extends Fragment {
     }
 
     //Intent method that gets the position of the views from the API
-    public Intent getIntentMethod() {
-        Intent intent = getActivity().getIntent();
+    public void getIntentMethod() {
+        Intent intent = requireActivity().getIntent();
         assert intent != null;
-        int position = intent.getIntExtra(EXTRA_POSITION, DEFAULT_POSITION);
-        if (position == DEFAULT_POSITION) {
-            // if EXTRA_POSITION not found in intent
-            return intent;
-        }
-        return intent;
+        intent.getIntExtra(EXTRA_POSITION, DEFAULT_POSITION);
     }
 
     /**
@@ -203,6 +191,7 @@ public class CityFragment extends Fragment {
         final String FEW_CLOUDS = "few clouds";
         final String SCATTERED_CLOUDS = "scattered clouds";
         final String BROKEN_CLOUDS = "broken clouds";
+        final String OVERCAST_CLOUDS = "overcast clouds";
         final String LIGHT_RAIN = "light rain";
         final String RAIN = "rain";
         final String THUNDERSTORM = "thunderstorm";
@@ -211,39 +200,42 @@ public class CityFragment extends Fragment {
 
         switch (weatherModel.getList().get(0).getWeather().get(0).getCloud_desc()) {
             case CLEAR_SKY:
-                Glide.with(getContext())
+                Glide.with(requireContext())
                         .load(R.raw.clear_sky_1).into(weatherBackdrop);
                 break;
             case FEW_CLOUDS:
-                Glide.with(getContext())
+                Glide.with(requireContext())
                         .load(R.raw.few_clouds).centerCrop().into(weatherBackdrop);
                 break;
             case SCATTERED_CLOUDS:
-                Glide.with(getContext())
+                Glide.with(requireContext())
                         .load(R.raw.scattered_cloud_1).centerCrop().into(weatherBackdrop);
                 break;
             case BROKEN_CLOUDS:
-                Glide.with(getContext())
+                Glide.with(requireContext())
                         .load(R.raw.broken_cloud_1).centerCrop().into(weatherBackdrop);
                 break;
+            case OVERCAST_CLOUDS:
+                Glide.with(requireContext())
+                     .load(R.raw.overcast_cloud_1).centerCrop().into(weatherBackdrop);
             case LIGHT_RAIN:
-                Glide.with(getContext())
+                Glide.with(requireContext())
                         .load(R.raw.shower_rain_1).centerCrop().into(weatherBackdrop);
                 break;
             case RAIN:
-                Glide.with(getContext())
-                        .load(R.raw.rain_1).centerCrop().into(weatherBackdrop);
+                Glide.with(requireContext())
+                        .load(R.raw.rain_2).centerCrop().into(weatherBackdrop);
                 break;
             case THUNDERSTORM:
-                Glide.with(getContext())
+                Glide.with(requireContext())
                         .load(R.raw.thunderstorm_1).centerCrop().into(weatherBackdrop);
                 break;
             case SNOW:
-                Glide.with(getContext())
+                Glide.with(requireContext())
                         .load(R.raw.snow).centerCrop().into(weatherBackdrop);
                 break;
             case MIST:
-                Glide.with(getContext()).load(R.raw.mist).into(weatherBackdrop);
+                Glide.with(requireContext()).load(R.raw.mist).into(weatherBackdrop);
                 break;
         }
     }

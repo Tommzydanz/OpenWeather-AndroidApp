@@ -55,7 +55,7 @@ public class FiveDayRVAdapter extends RecyclerView.Adapter<FiveDayRVAdapter.View
         Date dateObject = new Date(report.getDt()*1000L);
         String formattedDate = formatDate(dateObject);
         holder.daysView.setText(formattedDate);
-        holder.tempMinMaxView.setText(String.format("%s-%s", report.getMainList().getTemp_min(), report.getMainList().getTemp_max() + "\u00B0"));
+        holder.tempMinMaxView.setText(String.format("%s-%s", (int) report.getMainList().getTemp_min(),(int) report.getMainList().getTemp_max() + "\u00B0"));
         Glide.with(context)
                 .load("https://openweathermap.org/img/w/" + report.getWeather().get(0).getIcon() + ".png")
                 .fitCenter()

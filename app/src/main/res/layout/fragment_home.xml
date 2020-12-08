@@ -5,18 +5,18 @@
     android:id="@+id/view_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#000000"
-    android:backgroundTint="#1985B1"
+    android:background="@color/black"
+    android:backgroundTint="#01708C"
     tools:context=".ui.home.CityFragment">
 
     <pl.droidsonroids.gif.GifImageView
         android:id="@+id/weather_backdrop_view"
         android:layout_width="match_parent"
-        android:layout_height="269dp"
+        android:layout_height="210dp"
         android:background="@color/gray"
         android:backgroundTint="#BEBAB6B6"
         android:contentDescription="@string/weather_state_background"
-        android:scaleType="centerCrop"
+        android:scaleType="fitXY"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -43,8 +43,8 @@
         android:id="@+id/big_feels_like_tempView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="45dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="12dp"
         android:fontFamily="@font/nunito_bold"
         android:textColor="@android:color/white"
         android:textSize="72sp"
@@ -84,6 +84,7 @@
         android:id="@+id/main_date_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
         android:textColor="@color/white"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="@+id/weather_backdrop_view"
@@ -173,7 +174,7 @@
         android:layout_height="1dp"
         android:background="@color/black"
         android:backgroundTint="@android:color/white"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/five_days_textview"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -187,10 +188,12 @@
         android:layout_marginTop="28dp"
         android:background="@color/black"
         android:backgroundTint="@android:color/white"
+        app:layout_constraintBottom_toTopOf="@+id/recycler_list2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/humidity_view" />
+        app:layout_constraintTop_toBottomOf="@+id/humidity_view"
+        app:layout_constraintVertical_bias="0.008" />
 
     <TextView
         android:id="@+id/windDeg_view"
@@ -198,13 +201,13 @@
         android:layout_height="52dp"
         android:layout_marginTop="8dp"
         android:drawablePadding="28dp"
+        tools:text="@string/levels_detail"
         android:textAlignment="center"
         android:textColor="@color/white"
         app:drawableStartCompat="@drawable/ic_wind_direction"
         app:layout_constraintEnd_toStartOf="@+id/humidity_view"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/slide2"
-        tools:text="@string/levels_detail" />
+        app:layout_constraintTop_toBottomOf="@+id/slide2" />
 
     <View
         android:id="@+id/pole_1"
@@ -233,6 +236,22 @@
         app:layout_constraintTop_toBottomOf="@+id/slide2"
         tools:text="@string/humidities_detail" />
 
+    <TextView
+        android:id="@+id/feels_like_tempView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:drawablePadding="20dp"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        app:drawableStartCompat="@drawable/ic_thermometer_feels"
+        app:layout_constraintEnd_toEndOf="@+id/slide3"
+        app:layout_constraintHorizontal_bias="0.853"
+        app:layout_constraintStart_toEndOf="@+id/humidity_view"
+        app:layout_constraintTop_toBottomOf="@+id/slide2"
+        tools:text="@string/feels_like_detail" />
+
     <View
         android:id="@+id/pole_2"
         android:layout_width="1dp"
@@ -244,21 +263,6 @@
         app:layout_constraintStart_toEndOf="@+id/humidity_view"
         app:layout_constraintTop_toBottomOf="@+id/recycler_list1" />
 
-    <TextView
-        android:id="@+id/feels_like_tempView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:drawablePadding="20dp"
-        android:textAlignment="center"
-        android:textColor="@color/white"
-        app:drawableStartCompat="@drawable/ic_thermometer_feels"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.853"
-        app:layout_constraintStart_toEndOf="@+id/humidity_view"
-        app:layout_constraintTop_toBottomOf="@+id/slide2"
-        tools:text="@string/feels_like_detail" />
 
     <TextView
         android:id="@+id/five_days_textview"
@@ -266,12 +270,11 @@
         android:layout_height="wrap_content"
         android:text="@string/_title_5days"
         android:textColor="@color/white"
-        app:layout_constraintBottom_toBottomOf="@+id/slide4"
+        app:layout_constraintBottom_toTopOf="@+id/slide4"
         app:layout_constraintEnd_toEndOf="@+id/slide3"
         app:layout_constraintHorizontal_bias="0.037"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/slide3"
-        app:layout_constraintVertical_bias="0.19" />
+        app:layout_constraintTop_toBottomOf="@+id/slide3" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_list2"
